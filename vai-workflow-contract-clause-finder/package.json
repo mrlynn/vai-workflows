@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-contract-clause-finder",
+  "name": "@vaicli/vai-workflow-contract-clause-finder",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Search a legal document collection for specific clause types, rerank with legal-domain understanding, and extract structured clause summaries.",
   "keywords": [

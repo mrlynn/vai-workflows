@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-model-shootout",
+  "name": "@vaicli/vai-workflow-model-shootout",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Compare voyage-4-large, voyage-4, and voyage-4-lite side-by-side on your data. Shows retrieval quality differences and cost savings for each model.",
   "keywords": [

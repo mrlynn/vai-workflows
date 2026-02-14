@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-hybrid-precision-search",
+  "name": "@vaicli/vai-workflow-hybrid-precision-search",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Run three retrieval strategies in parallel (broad, precise, filtered), merge results, and rerank for optimal relevance.",
   "keywords": [

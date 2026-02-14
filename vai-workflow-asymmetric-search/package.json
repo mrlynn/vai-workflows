@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-asymmetric-search",
+  "name": "@vaicli/vai-workflow-asymmetric-search",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Demonstrate asymmetric retrieval: documents embedded with voyage-4-large, queries embedded with voyage-4-lite. Same embedding space, ~83% query cost reduction.",
   "keywords": [

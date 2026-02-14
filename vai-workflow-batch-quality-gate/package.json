@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-batch-quality-gate",
+  "name": "@vaicli/vai-workflow-batch-quality-gate",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Evaluate incoming documents against exemplar documents from the collection and only ingest those that meet a quality/relevance threshold.",
   "keywords": [

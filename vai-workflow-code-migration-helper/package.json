@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-code-migration-helper",
+  "name": "@vaicli/vai-workflow-code-migration-helper",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Find similar code patterns across repositories and generate migration suggestions using code-domain embeddings.",
   "keywords": [

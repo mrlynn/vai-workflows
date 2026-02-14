@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-multilingual-search",
+  "name": "@vaicli/vai-workflow-multilingual-search",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Translate a query into multiple languages, search in parallel, and merge results for cross-lingual retrieval.",
   "keywords": [

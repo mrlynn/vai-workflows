@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-clinical-protocol-match",
+  "name": "@vaicli/vai-workflow-clinical-protocol-match",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Match clinical presentations to relevant protocols and guidelines with structured recommendations and evidence citations.",
   "keywords": [

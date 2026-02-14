@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-collection-overlap-audit",
+  "name": "@vaicli/vai-workflow-collection-overlap-audit",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Compare two collections to find semantic duplicates. Samples documents from the source collection and searches for near-matches in the target.",
   "keywords": [

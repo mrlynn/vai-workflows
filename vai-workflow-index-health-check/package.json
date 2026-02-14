@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-index-health-check",
+  "name": "@vaicli/vai-workflow-index-health-check",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Run a comprehensive diagnostic on a collection: check document count, test retrieval quality, estimate costs, and generate a health report with recommendations.",
   "keywords": [

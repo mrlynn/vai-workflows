@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-meeting-action-items",
+  "name": "@vaicli/vai-workflow-meeting-action-items",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Ingest meeting notes into the knowledge base and extract structured action items with owners, deadlines, and context from prior meetings.",
   "keywords": [

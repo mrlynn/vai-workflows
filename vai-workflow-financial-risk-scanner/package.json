@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-financial-risk-scanner",
+  "name": "@vaicli/vai-workflow-financial-risk-scanner",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Scan financial document collections for risk indicators related to a company or topic, with domain-specific retrieval and risk assessment.",
   "keywords": [

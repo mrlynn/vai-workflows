@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-query-quality-scorer",
+  "name": "@vaicli/vai-workflow-query-quality-scorer",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Evaluate retrieval quality for a query by measuring semantic similarity between the query and its top results. Provides a quality score and recommendations without requiring labeled ground truth.",
   "keywords": [

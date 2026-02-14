@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-embedding-drift-detector",
+  "name": "@vaicli/vai-workflow-embedding-drift-detector",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Re-embed a sample of documents and compare against stored embeddings to detect drift from model changes or configuration issues.",
   "keywords": [

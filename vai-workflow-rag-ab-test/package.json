@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-rag-ab-test",
+  "name": "@vaicli/vai-workflow-rag-ab-test",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Run the same query through two different RAG configurations and compare results side-by-side with an LLM-generated evaluation.",
   "keywords": [

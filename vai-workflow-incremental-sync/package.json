@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-incremental-sync",
+  "name": "@vaicli/vai-workflow-incremental-sync",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Smart incremental ingestion that compares incoming documents against the existing collection using semantic similarity, with three-tier decision logic: skip duplicates, flag revisions, ingest new content.",
   "keywords": [

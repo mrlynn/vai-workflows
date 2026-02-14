@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-question-decomposition",
+  "name": "@vaicli/vai-workflow-question-decomposition",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "Decompose a complex question into sub-queries, search each in parallel, merge results, and synthesize a comprehensive answer.",
   "keywords": [

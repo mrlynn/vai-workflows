@@ -1,5 +1,6 @@
 {
-  "name": "vai-workflow-knowledge-base-bootstrap",
+  "name": "@vaicli/vai-workflow-knowledge-base-bootstrap",
+  "publishConfig": { "access": "public" },
   "version": "1.0.0",
   "description": "One-command knowledge base setup: ingest a document, verify the collection, run a test query, and generate a status report confirming everything works.",
   "keywords": [
