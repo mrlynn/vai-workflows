@@ -74,6 +74,10 @@
       "rerank",
       "filter",
       "generate"
-    ]
+    ],
+    "author": {
+      "name": "Michael Lynn",
+      "url": "https://github.com/mrlynn"
+    }
   }
 }
