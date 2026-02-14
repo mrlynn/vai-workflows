@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'vai-workflow-*/**'
+      - 'packages/vai-workflow-*/**'
 
 jobs:
   publish:
@@ -22,8 +22,8 @@ jobs:
       - name: Find changed workflow packages
         id: changed
         run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'vai-workflow-*' \
-            | cut -d/ -f1 | sort -u | grep '^vai-workflow-' || true)
+          CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'packages/vai-workflow-*' \
+            | cut -d/ -f1-2 | sort -u | grep '^packages/vai-workflow-' || true)
           echo "packages<<EOF" >> "$GITHUB_OUTPUT"
           echo "$CHANGED" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"

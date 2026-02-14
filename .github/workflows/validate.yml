@@ -1,0 +1,32 @@
+name: Validate Workflows
+
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate all workflow packages
+        run: bash scripts/validate-all.sh
+
+      - name: Verify package.json schema
+        run: |
+          for dir in packages/vai-workflow-*/; do
+            node -e "
+              const pkg = require('./$dir/package.json');
+              if (!pkg.vai) throw new Error('Missing vai field in $dir');
+              if (!pkg.vai.tools) throw new Error('Missing vai.tools in $dir');
+              if (!pkg.vai.workflowVersion) throw new Error('Missing vai.workflowVersion in $dir');
+              if (!pkg.name.startsWith('@vaicli/vai-workflow-')) throw new Error('Wrong scope in $dir');
+              console.log('✓ ' + pkg.name);
+            "
+          done
