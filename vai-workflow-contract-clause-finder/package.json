@@ -14,8 +14,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrlynn/voyageai-cli.git",
-    "directory": "packages/vai-workflow-contract-clause-finder"
+    "url": "https://github.com/mrlynn/vai-workflows.git",
+    "directory": "vai-workflow-contract-clause-finder"
   },
   "files": [
     "workflow.json",

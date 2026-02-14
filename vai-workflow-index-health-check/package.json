@@ -14,8 +14,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrlynn/voyageai-cli.git",
-    "directory": "packages/vai-workflow-index-health-check"
+    "url": "https://github.com/mrlynn/vai-workflows.git",
+    "directory": "vai-workflow-index-health-check"
   },
   "files": [
     "workflow.json",
