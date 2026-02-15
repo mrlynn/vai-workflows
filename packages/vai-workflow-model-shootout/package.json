@@ -73,6 +73,10 @@
     "author": {
       "name": "Michael Lynn",
       "url": "https://github.com/mrlynn"
+    },
+    "branding": {
+      "icon": "trophy",
+      "color": "#0D9488"
     }
   }
 }

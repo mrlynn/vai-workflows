@@ -82,6 +82,10 @@
     "author": {
       "name": "Michael Lynn",
       "url": "https://github.com/mrlynn"
+    },
+    "branding": {
+      "icon": "globe",
+      "color": "#0EA5E9"
     }
   }
 }

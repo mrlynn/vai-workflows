@@ -1,0 +1,82 @@
+{
+  "name": "vai-workflow-rag-chat",
+  "version": "1.0.0",
+  "description": "Retrieval-Augmented Generation chat: searches your knowledge base, reranks for relevance, filters low-quality matches, and generates a grounded answer with source citations",
+  "main": "workflow.json",
+  "keywords": [
+    "vai-workflow",
+    "voyageai-cli",
+    "query",
+    "conditional",
+    "template",
+    "merge",
+    "rerank",
+    "filter",
+    "generate"
+  ],
+  "vai": {
+    "workflowVersion": "1.0",
+    "category": "retrieval",
+    "tags": [],
+    "tools": [
+      "query",
+      "conditional",
+      "template",
+      "merge",
+      "rerank",
+      "filter",
+      "generate"
+    ],
+    "branding": {
+      "icon": "sparkle",
+      "color": "#00D4AA"
+    },
+    "inputs": {
+      "question": {
+        "type": "string",
+        "required": true,
+        "description": "The user's question or message"
+      },
+      "collection": {
+        "type": "string",
+        "required": true,
+        "description": "Knowledge base collection to search"
+      },
+      "collection2": {
+        "type": "string",
+        "required": false,
+        "default": "",
+        "description": "Optional second collection for broader search (leave empty to skip)"
+      },
+      "limit": {
+        "type": "number",
+        "required": false,
+        "default": 10,
+        "description": "Maximum documents to retrieve per collection"
+      },
+      "min_score": {
+        "type": "number",
+        "required": false,
+        "default": 0.3,
+        "description": "Minimum relevance score (0-1) to include a document"
+      },
+      "system_prompt": {
+        "type": "string",
+        "required": false,
+        "default": "You are a knowledgeable assistant. Answer questions accurately based on the provided context. Always cite your sources by referencing the document name or source field. If the context does not contain enough information to answer fully, say so clearly and explain what information is missing. Never fabricate information that is not in the provided context.",
+        "description": "Custom system prompt for the LLM"
+      },
+      "chat_history": {
+        "type": "string",
+        "required": false,
+        "default": "",
+        "description": "Previous conversation turns (for multi-turn context)"
+      }
+    }
+  },
+  "files": [
+    "workflow.json",
+    "README.md"
+  ],
+  "license": "MIT"
+}

@@ -72,6 +72,10 @@
     "author": {
       "name": "Michael Lynn",
       "url": "https://github.com/mrlynn"
+    },
+    "branding": {
+      "icon": "bar-chart-3",
+      "color": "#1D4ED8"
     }
   }
 }

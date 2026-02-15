@@ -1,0 +1,75 @@
+{
+  "name": "basic workflow test",
+  "inputs": {
+    "question": "test value",
+    "collection": "test value",
+    "collection2": "",
+    "limit": 10,
+    "min_score": 0.3,
+    "system_prompt": "You are a knowledgeable assistant. Answer questions accurately based on the provided context. Always cite your sources by referencing the document name or source field. If the context does not contain enough information to answer fully, say so clearly and explain what information is missing. Never fabricate information that is not in the provided context.",
+    "chat_history": ""
+  },
+  "mocks": {
+    "query": {
+      "results": [
+        {
+          "text": "Sample result",
+          "score": 0.95
+        }
+      ],
+      "resultCount": 1
+    },
+    "rerank": {
+      "results": [
+        {
+          "text": "Reranked result",
+          "score": 0.98
+        }
+      ],
+      "resultCount": 1
+    },
+    "generate": {
+      "text": "Generated text response",
+      "model": "mock-llm",
+      "provider": "mock"
+    }
+  },
+  "expect": {
+    "steps": {
+      "search_primary": {
+        "status": "completed"
+      },
+      "check_multi": {
+        "status": "completed"
+      },
+      "search_secondary": {
+        "status": "completed"
+      },
+      "skip_merge": {
+        "status": "completed"
+      },
+      "merge_results": {
+        "status": "completed"
+      },
+      "rerank": {
+        "status": "completed"
+      },
+      "filter_relevant": {
+        "status": "completed"
+      },
+      "check_context": {
+        "status": "completed"
+      },
+      "build_prompt": {
+        "status": "completed"
+      },
+      "generate_answer": {
+        "status": "completed"
+      },
+      "no_context_response": {
+        "status": "completed"
+      }
+    },
+    "noErrors": true
+  }
+}

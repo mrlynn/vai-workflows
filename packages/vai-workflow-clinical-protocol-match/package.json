@@ -76,6 +76,10 @@
     "author": {
       "name": "Michael Lynn",
       "url": "https://github.com/mrlynn"
+    },
+    "branding": {
+      "icon": "heart-pulse",
+      "color": "#0F766E"
     }
   }
 }
