@@ -1,0 +1,461 @@
+{
+  "$schema": "https://vai.dev/schemas/workflow/v1.json",
+  "id": "vai-code-search-toolkit",
+  "version": "1.0.0",
+  "name": "Code Search Toolkit",
+  "description": "Index, search, explain, and find duplicate code across any codebase using Voyage AI's code-optimized embedding models and MongoDB Atlas Vector Search.",
+  "author": {
+    "name": "VAI Team",
+    "url": "https://github.com/mrlynn/voyageai-cli"
+  },
+  "license": "MIT",
+  "domain": "Developer Tools",
+  "tags": [
+    "code-search",
+    "semantic-search",
+    "rag",
+    "developer-tools",
+    "codebase-indexing",
+    "duplicate-detection",
+    "code-explanation"
+  ],
+  "icon": "CodeSearch",
+  "compatibility": {
+    "vai": ">=1.0.0",
+    "models": ["voyage-code-3", "voyage-4-large"],
+    "rerankers": ["rerank-2.5", "rerank-2.5-lite"],
+    "infrastructure": {
+      "database": "MongoDB Atlas",
+      "vectorIndex": true
+    }
+  },
+  "config": {
+    "defaults": {
+      "database": "vai_code_search",
+      "embeddingModel": "voyage-code-3",
+      "docsModel": "voyage-4-large",
+      "rerankerModel": "rerank-2.5",
+      "chunkSize": 512,
+      "chunkOverlap": 50,
+      "maxFiles": 5000,
+      "maxFileSize": 100000,
+      "batchSize": 20
+    },
+    "userConfigurable": [
+      {
+        "key": "database",
+        "label": "Database Name",
+        "type": "string",
+        "description": "MongoDB database for storing code embeddings"
+      },
+      {
+        "key": "embeddingModel",
+        "label": "Code Embedding Model",
+        "type": "select",
+        "options": ["voyage-code-3", "voyage-4-large"],
+        "description": "Model used for embedding code files"
+      },
+      {
+        "key": "rerankerModel",
+        "label": "Reranker Model",
+        "type": "select",
+        "options": ["rerank-2.5", "rerank-2.5-lite"],
+        "description": "Model used for reranking search results"
+      },
+      {
+        "key": "chunkSize",
+        "label": "Chunk Size",
+        "type": "number",
+        "min": 100,
+        "max": 4000,
+        "description": "Target chunk size in characters for code splitting"
+      },
+      {
+        "key": "maxFiles",
+        "label": "Max Files to Index",
+        "type": "number",
+        "min": 1,
+        "max": 10000,
+        "description": "Maximum number of files to process during indexing"
+      }
+    ]
+  },
+
+  "steps": [
+    {
+      "id": "index",
+      "name": "Index Codebase",
+      "description": "Scan, chunk, and embed all files in a local directory or remote GitHub repo into MongoDB Atlas Vector Search.",
+      "tool": "vai_code_index",
+      "icon": "Database",
+      "input": {
+        "source": {
+          "type": "string",
+          "required": true,
+          "description": "Local directory path or GitHub repo URL",
+          "placeholder": "/path/to/project or https://github.com/org/repo"
+        },
+        "collection": {
+          "type": "string",
+          "required": false,
+          "description": "Collection name. Auto-derived from project name if omitted."
+        },
+        "model": {
+          "type": "string",
+          "required": false,
+          "default": "$config.embeddingModel",
+          "description": "Embedding model. Auto-detected based on file types if omitted."
+        },
+        "branch": {
+          "type": "string",
+          "required": false,
+          "default": "main",
+          "description": "Git branch for remote repos"
+        },
+        "contentType": {
+          "type": "enum",
+          "values": ["code", "docs", "config", "all"],
+          "default": "code",
+          "description": "Type of content to index"
+        },
+        "refresh": {
+          "type": "boolean",
+          "default": false,
+          "description": "Incremental refresh — only re-index changed files"
+        },
+        "chunkSize": {
+          "type": "number",
+          "default": "$config.chunkSize"
+        },
+        "chunkOverlap": {
+          "type": "number",
+          "default": "$config.chunkOverlap"
+        },
+        "batchSize": {
+          "type": "number",
+          "default": "$config.batchSize"
+        },
+        "maxFiles": {
+          "type": "number",
+          "default": "$config.maxFiles"
+        },
+        "maxFileSize": {
+          "type": "number",
+          "default": "$config.maxFileSize"
+        }
+      },
+      "output": {
+        "collection": "string",
+        "filesIndexed": "number",
+        "chunksCreated": "number",
+        "embeddingsStored": "number",
+        "tokensUsed": "number",
+        "duration": "number",
+        "skipped": {
+          "binary": "number",
+          "tooLarge": "number",
+          "excluded": "number"
+        }
+      }
+    },
+    {
+      "id": "search",
+      "name": "Semantic Code Search",
+      "description": "Search indexed code using natural language queries. Finds implementations by intent, not just keywords.",
+      "tool": "vai_code_search",
+      "icon": "Search",
+      "dependsOn": ["index"],
+      "input": {
+        "query": {
+          "type": "string",
+          "required": true,
+          "description": "Natural language search query",
+          "placeholder": "where do we handle authentication timeouts?"
+        },
+        "collection": {
+          "type": "string",
+          "required": false,
+          "description": "Collection to search. Uses last indexed collection if omitted."
+        },
+        "limit": {
+          "type": "number",
+          "default": 10,
+          "min": 1,
+          "max": 50,
+          "description": "Maximum results to return"
+        },
+        "language": {
+          "type": "string",
+          "required": false,
+          "description": "Filter by programming language (e.g., js, py, go)"
+        },
+        "category": {
+          "type": "enum",
+          "values": ["code", "docs", "config"],
+          "required": false,
+          "description": "Filter by content category"
+        },
+        "rerank": {
+          "type": "boolean",
+          "default": true,
+          "description": "Rerank results with Voyage AI reranker for better relevance"
+        },
+        "rerankModel": {
+          "type": "string",
+          "default": "$config.rerankerModel"
+        }
+      },
+      "output": {
+        "results": [
+          {
+            "filePath": "string",
+            "language": "string",
+            "chunk": "string",
+            "lineStart": "number",
+            "lineEnd": "number",
+            "score": "number",
+            "rerankScore": "number"
+          }
+        ],
+        "totalResults": "number",
+        "queryTokens": "number"
+      }
+    },
+    {
+      "id": "explain",
+      "name": "Explain Code (RAG)",
+      "description": "Ask questions about the codebase and get AI-generated explanations grounded in the actual source code via RAG.",
+      "tool": "vai_code_query",
+      "icon": "Chat",
+      "dependsOn": ["index"],
+      "input": {
+        "query": {
+          "type": "string",
+          "required": true,
+          "description": "Question about the codebase",
+          "placeholder": "How does the authentication middleware work?"
+        },
+        "collection": {
+          "type": "string",
+          "required": false,
+          "description": "Collection to query against"
+        },
+        "limit": {
+          "type": "number",
+          "default": 10,
+          "description": "Number of code chunks to retrieve as context"
+        },
+        "rerank": {
+          "type": "boolean",
+          "default": true,
+          "description": "Rerank retrieved context before sending to LLM"
+        },
+        "model": {
+          "type": "string",
+          "required": false,
+          "description": "LLM model for generating explanation (uses system default)"
+        }
+      },
+      "output": {
+        "answer": "string",
+        "sources": [
+          {
+            "filePath": "string",
+            "chunk": "string",
+            "lineStart": "number",
+            "lineEnd": "number",
+            "relevanceScore": "number"
+          }
+        ],
+        "tokensUsed": {
+          "retrieval": "number",
+          "generation": "number"
+        }
+      }
+    },
+    {
+      "id": "find-similar",
+      "name": "Find Similar Code",
+      "description": "Detect duplicate or semantically similar code across the indexed codebase. Paste a snippet or reference a file to find matches.",
+      "tool": "vai_code_find_similar",
+      "icon": "Copy",
+      "dependsOn": ["index"],
+      "input": {
+        "code": {
+          "type": "string",
+          "required": true,
+          "description": "Code snippet to find similar matches for",
+          "placeholder": "Paste a code snippet or function..."
+        },
+        "collection": {
+          "type": "string",
+          "required": false,
+          "description": "Collection to search"
+        },
+        "threshold": {
+          "type": "number",
+          "default": 0.85,
+          "min": 0.5,
+          "max": 1.0,
+          "description": "Minimum similarity score (0.5 = loose, 1.0 = exact)"
+        },
+        "limit": {
+          "type": "number",
+          "default": 10,
+          "min": 1,
+          "max": 50,
+          "description": "Maximum similar results to return"
+        },
+        "excludeFile": {
+          "type": "string",
+          "required": false,
+          "description": "File path to exclude from results (useful when searching for duplicates of a specific file)"
+        }
+      },
+      "output": {
+        "matches": [
+          {
+            "filePath": "string",
+            "language": "string",
+            "chunk": "string",
+            "lineStart": "number",
+            "lineEnd": "number",
+            "similarityScore": "number"
+          }
+        ],
+        "totalMatches": "number",
+        "duplicateClusters": "number"
+      }
+    }
+  ],
+
+  "pipelines": {
+    "full-index-and-search": {
+      "name": "Index & Search",
+      "description": "Index a codebase then run a semantic search query",
+      "steps": ["index", "search"]
+    },
+    "index-and-explain": {
+      "name": "Index & Explain",
+      "description": "Index a codebase then ask questions about it via RAG",
+      "steps": ["index", "explain"]
+    },
+    "full-audit": {
+      "name": "Full Code Audit",
+      "description": "Index the codebase, search for patterns, find duplicates, and generate explanations",
+      "steps": ["index", "search", "find-similar", "explain"]
+    }
+  },
+
+  "vectorIndex": {
+    "name": "code_vector_index",
+    "type": "vectorSearch",
+    "definition": {
+      "fields": [
+        {
+          "type": "vector",
+          "path": "embedding",
+          "numDimensions": 1024,
+          "similarity": "cosine"
+        },
+        {
+          "type": "filter",
+          "path": "metadata.language"
+        },
+        {
+          "type": "filter",
+          "path": "metadata.category"
+        },
+        {
+          "type": "filter",
+          "path": "metadata.filePath"
+        }
+      ]
+    }
+  },
+
+  "documentSchema": {
+    "description": "Shape of documents stored in MongoDB for each indexed code chunk",
+    "fields": {
+      "_id": "ObjectId",
+      "content": {
+        "type": "string",
+        "description": "The raw code/text chunk"
+      },
+      "embedding": {
+        "type": "array",
+        "items": "float64",
+        "description": "Vector embedding from Voyage AI model"
+      },
+      "metadata": {
+        "filePath": {
+          "type": "string",
+          "description": "Relative path from project root"
+        },
+        "language": {
+          "type": "string",
+          "description": "Detected programming language"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["code", "docs", "config"],
+          "description": "Content type classification"
+        },
+        "lineStart": {
+          "type": "number",
+          "description": "Starting line number in the original file"
+        },
+        "lineEnd": {
+          "type": "number",
+          "description": "Ending line number in the original file"
+        },
+        "functionName": {
+          "type": "string",
+          "description": "Enclosing function/class name if detected"
+        },
+        "fileHash": {
+          "type": "string",
+          "description": "SHA-256 hash for incremental refresh detection"
+        },
+        "indexedAt": {
+          "type": "date",
+          "description": "Timestamp when this chunk was indexed"
+        },
+        "source": {
+          "type": "string",
+          "description": "Origin: local path or GitHub URL"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Git branch (for remote repos)"
+        }
+      }
+    }
+  },
+
+  "marketplace": {
+    "category": "Developer Tools",
+    "featured": false,
+    "visibility": "public",
+    "pricing": "free",
+    "screenshots": [
+      {
+        "url": "/assets/workflows/code-search/index-output.png",
+        "caption": "Indexing a Node.js project with voyage-code-3"
+      },
+      {
+        "url": "/assets/workflows/code-search/semantic-search.png",
+        "caption": "Natural language code search with reranking"
+      },
+      {
+        "url": "/assets/workflows/code-search/explain-rag.png",
+        "caption": "RAG-powered code explanation with source references"
+      },
+      {
+        "url": "/assets/workflows/code-search/find-similar.png",
+        "caption": "Detecting duplicate code across the codebase"
+      }
+    ],
+    "readme": "## Code Search Toolkit\n\nTransform any codebase into a semantically searchable knowledge base using Voyage AI's code-optimized embedding models and MongoDB Atlas Vector Search.\n\n### What's Included\n\n**Index Codebase** — Scan, chunk, and embed all files in a local directory or remote GitHub repo. Supports incremental refresh so you only re-index what changed.\n\n**Semantic Code Search** — Search by intent, not just keywords. Ask \"where do we handle auth timeouts?\" and get the actual implementation.\n\n**Explain Code (RAG)** — Ask questions about your codebase and get AI-generated explanations grounded in the real source code.\n\n**Find Similar Code** — Paste a snippet and find duplicates or near-duplicates across the entire indexed repo. Great for refactoring and code reviews.\n\n### Quick Start\n\n1. Install the workflow from the VAI Marketplace\n2. Run **Index Codebase** pointing at your project directory\n3. Use **Semantic Search** or **Explain Code** to query your codebase\n\n### Models Used\n\n- `voyage-code-3` — Code-optimized embeddings (default for source files)\n- `voyage-4-large` — General-purpose embeddings (used for docs/markdown)\n- `rerank-2.5` — Reranker for improved search relevance\n\n### Requirements\n\n- VAI CLI v1.0.0+\n- MongoDB Atlas cluster with Vector Search enabled\n- Voyage AI API key"
+  }
+}
