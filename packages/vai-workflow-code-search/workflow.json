@@ -31,7 +31,7 @@
   },
   "config": {
     "defaults": {
-      "database": "vai_code_search",
+      "database": "code_search",
       "embeddingModel": "voyage-code-3",
       "docsModel": "voyage-4-large",
       "rerankerModel": "rerank-2.5",
@@ -86,7 +86,7 @@
       "id": "index",
       "name": "Index Codebase",
       "description": "Scan, chunk, and embed all files in a local directory or remote GitHub repo into MongoDB Atlas Vector Search.",
-      "tool": "vai_code_index",
+      "tool": "code_index",
       "icon": "Database",
       "input": {
         "source": {
@@ -162,7 +162,7 @@
       "id": "search",
       "name": "Semantic Code Search",
       "description": "Search indexed code using natural language queries. Finds implementations by intent, not just keywords.",
-      "tool": "vai_code_search",
+      "tool": "code_search",
       "icon": "Search",
       "dependsOn": ["index"],
       "input": {
@@ -225,7 +225,7 @@
       "id": "explain",
       "name": "Explain Code (RAG)",
       "description": "Ask questions about the codebase and get AI-generated explanations grounded in the actual source code via RAG.",
-      "tool": "vai_code_query",
+      "tool": "code_query",
       "icon": "Chat",
       "dependsOn": ["index"],
       "input": {
@@ -277,7 +277,7 @@
       "id": "find-similar",
       "name": "Find Similar Code",
       "description": "Detect duplicate or semantically similar code across the indexed codebase. Paste a snippet or reference a file to find matches.",
-      "tool": "vai_code_find_similar",
+      "tool": "code_find_similar",
       "icon": "Copy",
       "dependsOn": ["index"],
       "input": {
