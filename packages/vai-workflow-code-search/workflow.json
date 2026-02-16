@@ -88,7 +88,7 @@
       "description": "Scan, chunk, and embed all files in a local directory or remote GitHub repo into MongoDB Atlas Vector Search.",
       "tool": "code_index",
       "icon": "Database",
-      "input": {
+      "inputs": {
         "source": {
           "type": "string",
           "required": true,
@@ -165,7 +165,7 @@
       "tool": "code_search",
       "icon": "Search",
       "dependsOn": ["index"],
-      "input": {
+      "inputs": {
         "query": {
           "type": "string",
           "required": true,
@@ -228,7 +228,7 @@
       "tool": "code_query",
       "icon": "Chat",
       "dependsOn": ["index"],
-      "input": {
+      "inputs": {
         "query": {
           "type": "string",
           "required": true,
@@ -280,7 +280,7 @@
       "tool": "code_find_similar",
       "icon": "Copy",
       "dependsOn": ["index"],
-      "input": {
+      "inputs": {
         "code": {
           "type": "string",
           "required": true,

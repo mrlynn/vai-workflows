@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Find similar code patterns across repositories and generate migration suggestions using code-domain embeddings.",
   "keywords": [
     "vai-workflow",
